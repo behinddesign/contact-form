@@ -9,6 +9,7 @@ namespace craft\contactform\models;
 
 use craft\base\Model;
 use craft\web\UploadedFile;
+use yii\validators\EmailValidator;
 
 /**
  * Class Submission
@@ -17,6 +18,11 @@ use craft\web\UploadedFile;
  */
 class Submission extends Model
 {
+    /**
+     * @var string|null
+     */
+    public $toEmail;
+
     /**
      * @var string|null
      */
@@ -62,7 +68,19 @@ class Submission extends Model
     {
         return [
             [['fromEmail', 'message'], 'required'],
-            [['fromEmail'], 'email']
+            [['fromEmail'], 'email'],
+            [['toEmail'], 'checkEmailList']
         ];
+    }
+
+    public function checkEmailList($attribute, $params)
+    {
+        $validator = new EmailValidator();
+
+        $emails = !is_array($this->{$attribute}) ? explode(',', $this->{$attribute}) : $this->{$attribute};
+
+        foreach ($emails as $email) {
+            $validator->validate($email) ?? $this->addError($attribute, "{email} is not a valid email.");
+        }
     }
 }

@@ -35,6 +35,7 @@ class SendController extends Controller
         $settings = $plugin->getSettings();
 
         $submission = new Submission();
+        $submission->toEmail = $request->getValidatedBodyParam('toEmail');
         $submission->fromEmail = $request->getBodyParam('fromEmail');
         $submission->fromName = $request->getBodyParam('fromName');
         $submission->subject = $request->getBodyParam('subject');
