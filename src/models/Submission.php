@@ -71,7 +71,7 @@ class Submission extends Model
         return [
             [['fromEmail', 'message'], 'required'],
             [['fromEmail'], 'email'],
-            [['toEmail'], 'checkEmailList']
+            [['toEmail'], 'checkEmailList'],
         ];
     }
 
